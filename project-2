@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniERP - University Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --light-blue: #dbeafe;
+            --primary-orange: #f97316;
+            --secondary-orange: #fdba74;
+            --light-orange: #ffedd5;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --gray-light: #f3f4f6;
+            --border-radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Login Section */
+        .login-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .login-box {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .login-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2.8rem;
+            margin-right: 0.5rem;
+            color: var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary-orange);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .user-type-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background-color: var(--light-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .user-type-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-type-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-blue);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .user-type-tab.active {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .user-type-tab.active::after {
+            width: 80%;
+        }
+
+        .user-type-tab:not(.active):hover {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.85rem;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #f9fafb;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            background-color: var(--white);
+        }
+
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .captcha-box {
+            flex: 1;
+            background: linear-gradient(135deg, var(--light-orange) 0%, var(--secondary-orange) 100%);
+            padding: 0.85rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: var(--primary-orange);
+            margin-right: 1rem;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .refresh-captcha {
+            background-color: var(--primary-orange);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .refresh-captcha:hover {
+            background-color: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-blue);
+        }
+
+        .forgot-password {
+            text-align: center;
+            color: var(--secondary-blue);
+            cursor: pointer;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+            color: var(--primary-blue);
+        }
+
+        /* Dashboard Section */
+        .dashboard {
+            flex: 2;
+            display: none;
+            flex-direction: column;
+            padding: 2rem;
+            background-color: var(--white);
+            overflow-y: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ea580c 100%);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(249, 115, 22, 0.4);
+        }
+
+        .dashboard-content {
+            flex: 1;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .stats-card h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-blue);
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--light-blue), transparent);
+            margin: 1.5rem 0;
+        }
+
+        .options-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .options-section:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .options-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-blue);
+            font-weight: 700;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .option-card {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 1.8rem 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-blue);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            color: var(--white);
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        .option-card i {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-blue);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .option-card:hover i {
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .option-card div {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        /* Content Section */
+        .content-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            display: none;
+            transition: var(--transition);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-blue);
+        }
+
+        .content-header h2 {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .close-content {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-content:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .content-body {
+            padding: 1rem 0;
+        }
+
+        /* Sub-options in content sections */
+        .sub-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .sub-option-card {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-orange);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .sub-option-card:hover {
+            background: linear-gradient(135deg, var(--secondary-orange) 0%, var(--primary-orange) 100%);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.1);
+        }
+
+        .sub-option-card i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-orange);
+            transition: var(--transition);
+        }
+
+        .sub-option-card:hover i {
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        /* Form styling */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.2rem;
+            margin: 1.8rem 0;
+        }
+
+        .payment-option {
+            border: 2px solid var(--light-blue);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #f9fafb;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-blue);
+            background-color: var(--light-blue);
+            transform: translateY(-3px);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-blue);
+            background-color: var(--light-blue);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .payment-option i {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Course selection form */
+        .course-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Courses grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-blue);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .course-card:hover {
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+            color: var(--white);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-code {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .course-card:hover .course-code {
+            color: var(--white);
+        }
+
+        .course-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-info {
+            display: flex;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .course-info i {
+            margin-right: 0.5rem;
+            width: 16px;
+        }
+
+        /* Credits Section */
+        .credits-section {
+            margin-top: 2rem;
+        }
+
+        .credits-summary {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .credits-summary h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .credit-item {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .credit-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .credit-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Progress bars */
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Sub-content sections */
+        .sub-content {
+            display: none;
+        }
+
+        .sub-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-in-progress {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .login-container {
+                padding: 1.2rem;
+            }
+            
+            .dashboard {
+                padding: 1.2rem;
+            }
+            
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .course-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row, .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div class="login-container" id="loginSection">
+            <div class="login-box">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap logo-icon"></i>
+                    <div class="logo-text">Uni<span>ERP</span></div>
+                </div>
+                
+                <h1>University Management System</h1>
+                
+                <div class="user-type-tabs">
+                    <div class="user-type-tab active" data-user-type="student">Student</div>
+                    <div class="user-type-tab" data-user-type="teacher">Teacher</div>
+                    <div class="user-type-tab" data-user-type="admin">Administrator</div>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username" id="usernameLabel">Student ID</label>
+                        <input type="text" id="username" placeholder="Enter your Student ID" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="captcha">Enter Captcha</label>
+                        <div class="captcha-container">
+                            <div class="captcha-box" id="captchaText">ABCD</div>
+                            <button type="button" class="refresh-captcha" id="refreshCaptcha">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <input type="text" id="captcha" placeholder="Enter the captcha" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login">LOGIN</button>
+                    
+                    <div class="forgot-password" id="forgotPassword">Forgot Password?</div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">S</div>
+                    <div>
+                        <h2 id="userGreeting">Welcome, Student!</h2>
+                        <p id="userDetails">Student ID: S1001 | Computer Science</p>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="welcome-section">
+                    <h1 id="dashboardTitle">Student Dashboard</h1>
+                    <p>Welcome to your personalized dashboard. Here you can access your courses, grades, and university resources.</p>
+                </div>
+                
+                <div class="stats-section">
+                    <div class="stats-card">
+                        <h2>Journals & Conferences</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">Published</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">Submitted</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">In Progress</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <h2>Workshops, Seminars & Guest Lectures</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">Attended</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Registered</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">Upcoming</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="options-section">
+                    <h2>Quick Access</h2>
+                    <div class="options-grid">
+                        <div class="option-card" data-content="courses">
+                            <i class="fas fa-book"></i>
+                            <div>Courses</div>
+                        </div>
+                        <div class="option-card" data-content="credits">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>Credits & Grades</div>
+                        </div>
+                        <div class="option-card" data-content="counselling">
+                            <i class="fas fa-comments"></i>
+                            <div>Counselling Diary</div>
+                        </div>
+                        <div class="option-card" data-content="clubs">
+                            <i class="fas fa-users"></i>
+                            <div>Clubs/Activities</div>
+                        </div>
+                        <div class="option-card" data-content="exam">
+                            <i class="fas fa-file-alt"></i>
+                            <div>Exam Section</div>
+                        </div>
+                        <div class="option-card" data-content="fees">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>Fee Payments</div>
+                        </div>
+                        <div class="option-card" data-content="hostel">
+                            <i class="fas fa-building"></i>
+                            <div>Hostel Management</div>
+                        </div>
+                        <div class="option-card" data-content="hallticket">
+                            <i class="fas fa-ticket-alt"></i>
+                            <div>Hallticket</div>
+                        </div>
+                        <div class="option-card" data-content="library">
+                            <i class="fas fa-book-open"></i>
+                            <div>Library</div>
+                        </div>
+                        <div class="option-card" data-content="cgpa">
+                            <i class="fas fa-chart-line"></i>
+                            <div>My CGPA</div>
+                        </div>
+                        <div class="option-card" data-content="nodue">
+                            <i class="fas fa-check-circle"></i>
+                            <div>Nodue</div>
+                        </div>
+                        <div class="option-card" data-content="profile">
+                            <i class="fas fa-user"></i>
+                            <div>Profile</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Courses Content Section -->
+                <div class="content-section" id="courses-content">
+                    <div class="content-header">
+                        <h2>Courses</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="course-selection">
+                            <div class="form-group">
+                                <label for="academicYear">Academic Year</label>
+                                <select id="academicYear">
+                                    <option value="2023-2024">2023-2024</option>
+                                    <option value="2022-2023">2022-2023</option>
+                                    <option value="2021-2022">2021-2022</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="semester">Semester</label>
+                                <select id="semester">
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3" selected>Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option>
+                                    <option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option>
+                                    <option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="courses-grid" id="coursesList">
+                            <!-- Courses will be populated here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Credits Content Section -->
+                <div class="content-section" id="credits-content">
+                    <div class="content-header">
+                        <h2>Credits & Grades</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary">
+                            <h3>Credit Summary</h3>
+                            <div class="credits-grid">
+                                <div class="credit-item">
+                                    <div class="credit-value">78</div>
+                                    <div class="credit-label">Credits Completed</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">42</div>
+                                    <div class="credit-label">Credits Remaining</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">3.75</div>
+                                    <div class="credit-label">Current CGPA</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">65%</div>
+                                    <div class="credit-label">Degree Progress</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Degree Completion</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 1.5rem 0 1rem;">Current Semester Courses</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Course Name</th>
+                                    <th>Credits</th>
+                                    <th>Grade</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CS301</td>
+                                    <td>Data Structures & Algorithms</td>
+                                    <td>4</td>
+                                    <td>A</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>MATH202</td>
+                                    <td>Discrete Mathematics</td>
+                                    <td>3</td>
+                                    <td>B+</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>PHY102</td>
+                                    <td>Modern Physics</td>
+                                    <td>4</td>
+                                    <td>In Progress</td>
+                                    <td><span class="status-badge status-in-progress">Enrolled</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CS302</td>
+                                    <td>Database Management Systems</td>
+                                    <td>3</td>
+                                    <td>In Progress</td>
+                                    <td><span class="status-badge status-in-progress">Enrolled</span></td>
+                                </tr>
+                                <tr>
+                                    <td>HUM101</td>
+                                    <td>Professional Ethics</td>
+                                    <td>2</td>
+                                    <td>In Progress</td>
+                                    <td><span class="status-badge status-in-progress">Enrolled</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 1.5rem 0 1rem;">Credit Distribution</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Required</th>
+                                    <th>Completed</th>
+                                    <th>Remaining</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Core Courses</td>
+                                    <td>60</td>
+                                    <td>42</td>
+                                    <td>18</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 70%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Electives</td>
+                                    <td>24</td>
+                                    <td>12</td>
+                                    <td>12</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 50%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lab Courses</td>
+                                    <td>16</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 62.5%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>General Education</td>
+                                    <td>20</td>
+                                    <td>14</td>
+                                    <td>6</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 70%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Counselling Content Section -->
+                <div class="content-section" id="counselling-content">
+                    <div class="content-header">
+                        <h2>Counselling Diary</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="sub-options-grid">
+                            <div class="sub-option-card active" data-sub-content="appointments">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>Book Appointments</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="sessions">
+                                <i class="fas fa-history"></i>
+                                <div>Session History</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="resources">
+                                <i class="fas fa-book"></i>
+                                <div>Resources</div>
+                            </div>
+                        </div>
+                        
+                        <div id="appointments-sub" class="sub-content active">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Book a Counselling Session</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="counsellor">Select Counsellor</label>
+                                    <select id="counsellor">
+                                        <option value="dr_smith">Dr. Smith (Career Guidance)</option>
+                                        <option value="dr_johnson">Dr. Johnson (Academic Support)</option>
+                                        <option value="dr_williams">Dr. Williams (Personal Counselling)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointmentDate">Preferred Date</label>
+                                    <input type="date" id="appointmentDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime">Preferred Time</label>
+                                <select id="appointmentTime">
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sessionReason">Reason for Session</label>
+                                <textarea id="sessionReason" rows="4" placeholder="Briefly describe what you'd like to discuss..."></textarea>
+                            </div>
+                            <button class="btn btn-primary">Book Appointment</button>
+                        </div>
+                        
+                        <div id="sessions-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Session History</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Counsellor</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>15 Oct 2023</td>
+                                        <td>Dr. Johnson</td>
+                                        <td>Academic Support</td>
+                                        <td><span class="status-badge status-completed">Completed</span></td>
+                                        <td>Discussed course selection for next semester</td>
+                                    </tr>
+                                    <tr>
+                                        <td>22 Sep 2023</td>
+                                        <td>Dr. Williams</td>
+                                        <td>Personal Counselling</td>
+                                        <td><span class="status-badge status-completed">Completed</span></td>
+                                        <td>Stress management techniques</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10 Aug 2023</td>
+                                        <td>Dr. Smith</td>
+                                        <td>Career Guidance</td>
+                                        <td><span class="status-badge status-completed">Completed</span></td>
+                                        <td>Internship opportunities discussion</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="resources-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Counselling Resources</h3>
+                            <div class="courses-grid">
+                                <div class="course-card">
+                                    <div class="course-code">Stress Management</div>
+                                    <div class="course-name">Coping with Academic Pressure</div>
+                                    <div class="course-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>PDF Guide</span>
+                                    </div>
+                                    <div class="course-info">
+                                        <i class="fas fa-clock"></i>
+                                        <span>15 min read</span>
+                                    </div>
+                                </div>
+                                <div class="course-card">
+                                    <div class="course-code">Career Planning</div>
+                                    <div class="course-name">Exploring Career Options</div>
+                                    <div class="course-info">
+                                        <i class="fas fa-video"></i>
+                                        <span>Video Series</span>
+                                    </div>
+                                    <div class="course-info">
+                                        <i class="fas fa-clock"></i>
+                                        <span>45 min total</span>
+                                    </div>
+                                </div>
+                                <div class="course-card">
+                                    <div class="course-code">Study Skills</div>
+                                    <div class="course-name">Effective Study Techniques</div>
+                                    <div class="course-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>Workbook</span>
+                                    </div>
+                                    <div class="course-info">
+                                        <i class="fas fa-clock"></i>
+                                        <span>30 min exercises</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Clubs/Activities Content Section -->
+                <div class="content-section" id="clubs-content">
+                    <div class="content-header">
+                        <h2>Clubs & Activities</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Available Clubs</h3>
+                        <div class="courses-grid">
+                            <div class="course-card">
+                                <div class="course-code">CS Club</div>
+                                <div class="course-name">Computer Science Club</div>
+                                <div class="course-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>Members: 45</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Meets: Every Tuesday</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Location: CS Building Room 101</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Status: <span class="status-badge status-completed">Member</span></span>
+                                </div>
+                            </div>
+                            <div class="course-card">
+                                <div class="course-code">Debate</div>
+                                <div class="course-name">Debating Society</div>
+                                <div class="course-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>Members: 32</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Meets: Every Thursday</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Location: Humanities Building</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Status: <span class="status-badge status-pending">Not a Member</span></span>
+                                </div>
+                            </div>
+                            <div class="course-card">
+                                <div class="course-code">Robotics</div>
+                                <div class="course-name">Robotics Club</div>
+                                <div class="course-info">
+                                    <i class="fas fa-users"></i>
+                                    <span>Members: 28</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Meets: Every Wednesday</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Location: Engineering Lab 2</span>
+                                </div>
+                                <div class="course-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Status: <span class="status-badge status-completed">Member</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Upcoming Events</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Club</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hackathon 2023</td>
+                                    <td>15 Nov 2023</td>
+                                    <td>CS Club</td>
+                                    <td>Main Auditorium</td>
+                                    <td><span class="status-badge status-completed">Registered</span></td>
+                                </tr>
+                                <tr>
+                                    <td>AI Workshop</td>
+                                    <td>22 Nov 2023</td>
+                                    <td>CS Club</td>
+                                    <td>CS Lab 3</td>
+                                    <td><span class="status-badge status-completed">Registered</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Debate Competition</td>
+                                    <td>30 Nov 2023</td>
+                                    <td>Debating Society</td>
+                                    <td>Auditorium 2</td>
+                                    <td><span class="status-badge status-pending">Not Registered</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Robotics Exhibition</td>
+                                    <td>5 Dec 2023</td>
+                                    <td>Robotics Club</td>
+                                    <td>Engineering Building</td>
+                                    <td><span class="status-badge status-in-progress">Interested</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Exam Section Content -->
+                <div class="content-section" id="exam-content">
+                    <div class="content-header">
+                        <h2>Exam Section</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="sub-options-grid">
+                            <div class="sub-option-card active" data-sub-content="schedule">
+                                <i class="fas fa-calendar"></i>
+                                <div>Exam Schedule</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="results">
+                                <i class="fas fa-chart-bar"></i>
+                                <div>Results</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="application">
+                                <i class="fas fa-edit"></i>
+                                <div>Exam Application</div>
+                            </div>
+                        </div>
+                        
+                        <div id="schedule-sub" class="sub-content active">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Semester 3 Exam Schedule</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <th>Course Name</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Venue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CS301</td>
+                                        <td>Data Structures & Algorithms</td>
+                                        <td>15 Dec 2023</td>
+                                        <td>9:00 AM - 12:00 PM</td>
+                                        <td>Hall A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MATH202</td>
+                                        <td>Discrete Mathematics</td>
+                                        <td>18 Dec 2023</td>
+                                        <td>9:00 AM - 12:00 PM</td>
+                                        <td>Hall B</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PHY102</td>
+                                        <td>Modern Physics</td>
+                                        <td>20 Dec 2023</td>
+                                        <td>2:00 PM - 5:00 PM</td>
+                                        <td>Hall C</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CS302</td>
+                                        <td>Database Management Systems</td>
+                                        <td>22 Dec 2023</td>
+                                        <td>9:00 AM - 12:00 PM</td>
+                                        <td>Hall A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HUM101</td>
+                                        <td>Professional Ethics</td>
+                                        <td>24 Dec 2023</td>
+                                        <td>2:00 PM - 5:00 PM</td>
+                                        <td>Hall D</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="results-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Previous Semester Results</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Semester</th>
+                                        <th>Course Code</th>
+                                        <th>Course Name</th>
+                                        <th>Credits</th>
+                                        <th>Grade</th>
+                                        <th>Grade Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Semester 2</td>
+                                        <td>CS201</td>
+                                        <td>Programming Fundamentals</td>
+                                        <td>4</td>
+                                        <td>A</td>
+                                        <td>4.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Semester 2</td>
+                                        <td>MATH101</td>
+                                        <td>Calculus I</td>
+                                        <td>3</td>
+                                        <td>B+</td>
+                                        <td>3.3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Semester 2</td>
+                                        <td>PHY101</td>
+                                        <td>Physics I</td>
+                                        <td>4</td>
+                                        <td>A-</td>
+                                        <td>3.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Semester 2</td>
+                                        <td>ENG101</td>
+                                        <td>English Composition</td>
+                                        <td>3</td>
+                                        <td>B+</td>
+                                        <td>3.3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="application-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Exam Application Form</h3>
+                            <div class="credits-summary">
+                                <h3>Application Status: <span class="status-badge status-completed">Submitted</span></h3>
+                                <p>Your exam application for Semester 3 has been successfully submitted on 15 October 2023.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="examCourses">Courses Applied For</label>
+                                <div style="margin-top: 1rem;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                        <input type="checkbox" id="cs301" checked disabled style="width: auto; margin-right: 0.5rem;">
+                                        <label for="cs301" style="margin-bottom: 0;">CS301 - Data Structures & Algorithms</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                        <input type="checkbox" id="math202" checked disabled style="width: auto; margin-right: 0.5rem;">
+                                        <label for="math202" style="margin-bottom: 0;">MATH202 - Discrete Mathematics</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                        <input type="checkbox" id="phy102" checked disabled style="width: auto; margin-right: 0.5rem;">
+                                        <label for="phy102" style="margin-bottom: 0;">PHY102 - Modern Physics</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                        <input type="checkbox" id="cs302" checked disabled style="width: auto; margin-right: 0.5rem;">
+                                        <label for="cs302" style="margin-bottom: 0;">CS302 - Database Management Systems</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                        <input type="checkbox" id="hum101" checked disabled style="width: auto; margin-right: 0.5rem;">
+                                        <label for="hum101" style="margin-bottom: 0;">HUM101 - Professional Ethics</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" disabled>Application Submitted</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fee Payments Content Section -->
+                <div class="content-section" id="fees-content">
+                    <div class="content-header">
+                        <h2>Fee Payments</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary">
+                            <h3>Fee Summary</h3>
+                            <div class="credits-grid">
+                                <div class="credit-item">
+                                    <div class="credit-value">$2,500</div>
+                                    <div class="credit-label">Total Fees</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">$1,800</div>
+                                    <div class="credit-label">Paid</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">$700</div>
+                                    <div class="credit-label">Balance</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">15 Dec</div>
+                                    <div class="credit-label">Due Date</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Fee Breakdown</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fee Type</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tuition Fee</td>
+                                    <td>$1,500</td>
+                                    <td>15 Dec 2023</td>
+                                    <td><span class="status-badge status-completed">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Hostel Fee</td>
+                                    <td>$800</td>
+                                    <td>15 Dec 2023</td>
+                                    <td><span class="status-badge status-completed">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Library Fee</td>
+                                    <td>$100</td>
+                                    <td>15 Dec 2023</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Examination Fee</td>
+                                    <td>$100</td>
+                                    <td>15 Dec 2023</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Payment History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Fee Type</th>
+                                    <th>Amount</th>
+                                    <th>Payment Method</th>
+                                    <th>Transaction ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15 Sep 2023</td>
+                                    <td>Tuition Fee</td>
+                                    <td>$1,500</td>
+                                    <td>Credit Card</td>
+                                    <td>TXN-789456</td>
+                                </tr>
+                                <tr>
+                                    <td>15 Sep 2023</td>
+                                    <td>Hostel Fee</td>
+                                    <td>$800</td>
+                                    <td>Credit Card</td>
+                                    <td>TXN-789457</td>
+                                </tr>
+                                <tr>
+                                    <td>15 Aug 2023</td>
+                                    <td>Library Fee</td>
+                                    <td>$100</td>
+                                    <td>Bank Transfer</td>
+                                    <td>TXN-123456</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Make Payment</h3>
+                        <div class="payment-options">
+                            <div class="payment-option selected">
+                                <i class="fas fa-credit-card"></i>
+                                <div>Credit Card</div>
+                            </div>
+                            <div class="payment-option">
+                                <i class="fas fa-university"></i>
+                                <div>Bank Transfer</div>
+                            </div>
+                            <div class="payment-option">
+                                <i class="fab fa-paypal"></i>
+                                <div>PayPal</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardHolder">Card Holder Name</label>
+                                <input type="text" id="cardHolder" placeholder="John Doe">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" id="expiryDate" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount to Pay ($)</label>
+                            <input type="number" id="amount" value="200">
+                        </div>
+                        <button class="btn btn-primary">Pay Now</button>
+                    </div>
+                </div>
+                
+                <!-- Hostel Management Content Section -->
+                <div class="content-section" id="hostel-content">
+                    <div class="content-header">
+                        <h2>Hostel Management</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary">
+                            <h3>Hostel Details</h3>
+                            <div class="credits-grid">
+                                <div class="credit-item">
+                                    <div class="credit-value">B-204</div>
+                                    <div class="credit-label">Room Number</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">Block B</div>
+                                    <div class="credit-label">Hostel Block</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">2</div>
+                                    <div class="credit-label">Roommates</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">$800</div>
+                                    <div class="credit-label">Monthly Rent</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Roommate Information</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Student ID</th>
+                                    <th>Program</th>
+                                    <th>Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Michael Johnson</td>
+                                    <td>S1002</td>
+                                    <td>Electrical Engineering</td>
+                                    <td>michael.j@university.edu</td>
+                                </tr>
+                                <tr>
+                                    <td>David Wilson</td>
+                                    <td>S1005</td>
+                                    <td>Mechanical Engineering</td>
+                                    <td>david.w@university.edu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Maintenance Requests</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Issue</th>
+                                    <th>Date Reported</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#12345</td>
+                                    <td>AC Not Working</td>
+                                    <td>10 Nov 2023</td>
+                                    <td><span class="status-badge status-completed">Resolved</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#12367</td>
+                                    <td>Leaking Tap</td>
+                                    <td>15 Nov 2023</td>
+                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#12389</td>
+                                    <td>WiFi Issue</td>
+                                    <td>18 Nov 2023</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Submit New Request</h3>
+                        <div class="form-group">
+                            <label for="issueType">Issue Type</label>
+                            <select id="issueType">
+                                <option value="electrical">Electrical</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="furniture">Furniture</option>
+                                <option value="internet">Internet/WiFi</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issueDescription">Issue Description</label>
+                            <textarea id="issueDescription" rows="4" placeholder="Please describe the issue in detail..."></textarea>
+                        </div>
+                        <button class="btn btn-primary">Submit Request</button>
+                    </div>
+                </div>
+                
+                <!-- Hallticket Content Section -->
+                <div class="content-section" id="hallticket-content">
+                    <div class="content-header">
+                        <h2>Hallticket</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary" style="text-align: center;">
+                            <h3>Semester 3 Examination Hallticket</h3>
+                            <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+                                <div style="width: 150px; height: 150px; background: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--primary-blue);">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1.5rem;">
+                                <p><strong>Student Name:</strong> John Smith</p>
+                                <p><strong>Student ID:</strong> S1001</p>
+                                <p><strong>Program:</strong> B.Tech Computer Science</p>
+                                <p><strong>Semester:</strong> 3</p>
+                                <p><strong>Academic Year:</strong> 2023-2024</p>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Examination Details</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Course Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Venue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CS301</td>
+                                    <td>Data Structures & Algorithms</td>
+                                    <td>15 Dec 2023</td>
+                                    <td>9:00 AM - 12:00 PM</td>
+                                    <td>Hall A</td>
+                                </tr>
+                                <tr>
+                                    <td>MATH202</td>
+                                    <td>Discrete Mathematics</td>
+                                    <td>18 Dec 2023</td>
+                                    <td>9:00 AM - 12:00 PM</td>
+                                    <td>Hall B</td>
+                                </tr>
+                                <tr>
+                                    <td>PHY102</td>
+                                    <td>Modern Physics</td>
+                                    <td>20 Dec 2023</td>
+                                    <td>2:00 PM - 5:00 PM</td>
+                                    <td>Hall C</td>
+                                </tr>
+                                <tr>
+                                    <td>CS302</td>
+                                    <td>Database Management Systems</td>
+                                    <td>22 Dec 2023</td>
+                                    <td>9:00 AM - 12:00 PM</td>
+                                    <td>Hall A</td>
+                                </tr>
+                                <tr>
+                                    <td>HUM101</td>
+                                    <td>Professional Ethics</td>
+                                    <td>24 Dec 2023</td>
+                                    <td>2:00 PM - 5:00 PM</td>
+                                    <td>Hall D</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-print"></i> Print Hallticket
+                            </button>
+                            <button class="btn btn-primary" style="margin-left: 1rem;">
+                                <i class="fas fa-download"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Library Content Section -->
+                <div class="content-section" id="library-content">
+                    <div class="content-header">
+                        <h2>Library</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="sub-options-grid">
+                            <div class="sub-option-card active" data-sub-content="search">
+                                <i class="fas fa-search"></i>
+                                <div>Search Books</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="borrowed">
+                                <i class="fas fa-book"></i>
+                                <div>Borrowed Books</div>
+                            </div>
+                            <div class="sub-option-card" data-sub-content="history">
+                                <i class="fas fa-history"></i>
+                                <div>Borrowing History</div>
+                            </div>
+                        </div>
+                        
+                        <div id="search-sub" class="sub-content active">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Search Library Catalog</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="searchQuery">Search Term</label>
+                                    <input type="text" id="searchQuery" placeholder="Enter book title, author, or ISBN">
+                                </div>
+                                <div class="form-group">
+                                    <label for="searchCategory">Category</label>
+                                    <select id="searchCategory">
+                                        <option value="all">All Categories</option>
+                                        <option value="computer">Computer Science</option>
+                                        <option value="math">Mathematics</option>
+                                        <option value="physics">Physics</option>
+                                        <option value="engineering">Engineering</option>
+                                        <option value="fiction">Fiction</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">Search</button>
+                            
+                            <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Search Results</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>ISBN</th>
+                                        <th>Availability</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Introduction to Algorithms</td>
+                                        <td>Cormen, Leiserson, Rivest</td>
+                                        <td>978-0262033848</td>
+                                        <td><span class="status-badge status-completed">Available</span></td>
+                                        <td><button class="btn btn-primary" style="padding: 0.5rem 1rem;">Borrow</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Database System Concepts</td>
+                                        <td>Abraham Silberschatz</td>
+                                        <td>978-0078022159</td>
+                                        <td><span class="status-badge status-completed">Available</span></td>
+                                        <td><button class="btn btn-primary" style="padding: 0.5rem 1rem;">Borrow</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clean Code: A Handbook of Agile Software Craftsmanship</td>
+                                        <td>Robert C. Martin</td>
+                                        <td>978-0132350884</td>
+                                        <td><span class="status-badge status-pending">Checked Out</span></td>
+                                        <td><button class="btn btn-primary" style="padding: 0.5rem 1rem;" disabled>Borrow</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="borrowed-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Currently Borrowed Books</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Author</th>
+                                        <th>Borrowed Date</th>
+                                        <th>Due Date</th>
+                                        <th>Fine (if any)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Introduction to Algorithms</td>
+                                        <td>Cormen, Leiserson, Rivest</td>
+                                        <td>10 Nov 2023</td>
+                                        <td>10 Dec 2023</td>
+                                        <td>$0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Database System Concepts</td>
+                                        <td>Abraham Silberschatz</td>
+                                        <td>15 Nov 2023</td>
+                                        <td>15 Dec 2023</td>
+                                        <td>$0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discrete Mathematics and Its Applications</td>
+                                        <td>Kenneth H. Rosen</td>
+                                        <td>5 Nov 2023</td>
+                                        <td>5 Dec 2023</td>
+                                        <td>$2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="history-sub" class="sub-content">
+                            <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Borrowing History</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Author</th>
+                                        <th>Borrowed Date</th>
+                                        <th>Returned Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>The C Programming Language</td>
+                                        <td>Brian W. Kernighan, Dennis M. Ritchie</td>
+                                        <td>15 Aug 2023</td>
+                                        <td>15 Sep 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Computer Networks</td>
+                                        <td>Andrew S. Tanenbaum</td>
+                                        <td>20 Jul 2023</td>
+                                        <td>20 Aug 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Operating System Concepts</td>
+                                        <td>Abraham Silberschatz</td>
+                                        <td>10 Jun 2023</td>
+                                        <td>10 Jul 2023</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CGPA Content Section -->
+                <div class="content-section" id="cgpa-content">
+                    <div class="content-header">
+                        <h2>My CGPA</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary">
+                            <h3>Academic Performance</h3>
+                            <div class="credits-grid">
+                                <div class="credit-item">
+                                    <div class="credit-value">3.75</div>
+                                    <div class="credit-label">Current CGPA</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">3.82</div>
+                                    <div class="credit-label">Semester GPA</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">78</div>
+                                    <div class="credit-label">Credits Completed</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">65%</div>
+                                    <div class="credit-label">Degree Progress</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>CGPA Progress</span>
+                                <span>3.75/4.0</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 93.75%"></div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Semester-wise Performance</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Semester</th>
+                                    <th>SGPA</th>
+                                    <th>CGPA</th>
+                                    <th>Credits</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Semester 1</td>
+                                    <td>3.65</td>
+                                    <td>3.65</td>
+                                    <td>18</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Semester 2</td>
+                                    <td>3.70</td>
+                                    <td>3.68</td>
+                                    <td>20</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Semester 3</td>
+                                    <td>3.82</td>
+                                    <td>3.75</td>
+                                    <td>22</td>
+                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Semester 4</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge status-pending">Upcoming</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Grade Distribution</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Grade</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A (4.0)</td>
+                                    <td>8</td>
+                                    <td>40%</td>
+                                </tr>
+                                <tr>
+                                    <td>A- (3.7)</td>
+                                    <td>5</td>
+                                    <td>25%</td>
+                                </tr>
+                                <tr>
+                                    <td>B+ (3.3)</td>
+                                    <td>4</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>B (3.0)</td>
+                                    <td>3</td>
+                                    <td>15%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Nodue Content Section -->
+                <div class="content-section" id="nodue-content">
+                    <div class="content-header">
+                        <h2>Nodue Certificate</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div class="credits-summary">
+                            <h3>Nodue Status for Semester 3</h3>
+                            <div class="credits-grid">
+                                <div class="credit-item">
+                                    <div class="credit-value">5/8</div>
+                                    <div class="credit-label">Departments Cleared</div>
+                                </div>
+                                <div class="credit-item">
+                                    <div class="credit-value">Pending</div>
+                                    <div class="credit-label">Overall Status</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--primary-blue); margin: 2rem 0 1rem;">Department-wise Status</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Computer Science</td>
+                                    <td><span class="status-badge status-completed">Cleared</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Library</td>
+                                    <td><span class="status-badge status-completed">Cleared</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Hostel</td>
+                                    <td><span class="status-badge status-completed">Cleared</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Accounts</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>Fee balance of $200</td>
+                                </tr>
+                                <tr>
+                                    <td>Sports</td>
+                                    <td><span class="status-badge status-completed">Cleared</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Laboratories</td>
+                                    <td><span class="status-badge status-completed">Cleared</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Transport</td>
+                                    <td><span class="status-badge status-in-progress">In Process</span></td>
+                                    <td>Verification in progress</td>
+                                </tr>
+                                <tr>
+                                    <td>Student Affairs</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>Event participation certificate required</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-file-download"></i> Download Status Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Content Section -->
+                <div class="content-section" id="profile-content">
+                    <div class="content-header">
+                        <h2>My Profile</h2>
+                        <button class="close-content">&times;</button>
+                    </div>
+                    <div class="content-body">
+                        <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
+                            <div style="width: 150px; height: 150px; background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">
+                                JS
+                            </div>
+                            <div style="flex: 1;">
+                                <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">John Smith</h3>
+                                <p><strong>Student ID:</strong> S1001</p>
+                                <p><strong>Program:</strong> B.Tech Computer Science</p>
+                                <p><strong>Semester:</strong> 3</p>
+                                <p><strong>Email:</strong> john.smith@university.edu</p>
+                                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" value="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" value="Smith">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" value="john.smith@university.edu">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" value="+1 (555) 123-4567">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" rows="3">123 University Ave, Campus Town</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyContact">Emergency Contact</label>
+                                <input type="text" id="emergencyContact" value="Jane Smith (Mother)">
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyPhone">Emergency Phone</label>
+                                <input type="tel" id="emergencyPhone" value="+1 (555) 987-6543">
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary">Update Profile</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loginSection = document.getElementById('loginSection');
+            const dashboard = document.getElementById('dashboard');
+            const loginForm = document.getElementById('loginForm');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userTypeTabs = document.querySelectorAll('.user-type-tab');
+            const usernameLabel = document.getElementById('usernameLabel');
+            const captchaText = document.getElementById('captchaText');
+            const refreshCaptcha = document.getElementById('refreshCaptcha');
+            const userGreeting = document.getElementById('userGreeting');
+            const userDetails = document.getElementById('userDetails');
+            const userAvatar = document.getElementById('userAvatar');
+            const dashboardTitle = document.getElementById('dashboardTitle');
+            const optionCards = document.querySelectorAll('.option-card');
+            const contentSections = document.querySelectorAll('.content-section');
+            const closeContentButtons = document.querySelectorAll('.close-content');
+            const coursesList = document.getElementById('coursesList');
+            const academicYear = document.getElementById('academicYear');
+            const semester = document.getElementById('semester');
+            const subOptionCards = document.querySelectorAll('.sub-option-card');
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            
+            // Sample course data
+            const courses = [
+                {
+                    code: 'CS301',
+                    name: 'Data Structures & Algorithms',
+                    credits: 4,
+                    instructor: 'Dr. Sarah Johnson',
+                    schedule: 'Mon, Wed, Fri - 10:00 AM to 11:00 AM',
+                    location: 'Computer Lab 3',
+                    description: 'This course covers fundamental data structures and algorithms, including arrays, linked lists, trees, graphs, sorting, and searching algorithms.',
+                    status: 'Completed',
+                    grade: 'A'
+                },
+                {
+                    code: 'MATH202',
+                    name: 'Discrete Mathematics',
+                    credits: 3,
+                    instructor: 'Dr. Robert Miller',
+                    schedule: 'Tue, Thu - 2:00 PM to 3:30 PM',
+                    location: 'Math Building Room 205',
+                    description: 'Introduction to discrete mathematical structures with emphasis on applications in computer science. Topics include logic, sets, relations, functions, combinatorics, and graph theory.',
+                    status: 'Completed',
+                    grade: 'B+'
+                },
+                {
+                    code: 'PHY102',
+                    name: 'Modern Physics',
+                    credits: 4,
+                    instructor: 'Dr. Michael Brown',
+                    schedule: 'Mon, Wed, Fri - 1:00 PM to 2:00 PM',
+                    location: 'Physics Lab 1',
+                    description: 'This course covers special relativity, quantum mechanics, atomic physics, nuclear physics, and particle physics.',
+                    status: 'In Progress',
+                    grade: '--'
+                },
+                {
+                    code: 'CS302',
+                    name: 'Database Management Systems',
+                    credits: 3,
+                    instructor: 'Prof. Jennifer Lee',
+                    schedule: 'Tue, Thu - 11:00 AM to 12:30 PM',
+                    location: 'Computer Lab 2',
+                    description: 'Introduction to database systems, data modeling, relational databases, SQL, normalization, transaction processing, and database design.',
+                    status: 'In Progress',
+                    grade: '--'
+                },
+                {
+                    code: 'HUM101',
+                    name: 'Professional Ethics',
+                    credits: 2,
+                    instructor: 'Dr. David Wilson',
+                    schedule: 'Mon - 3:00 PM to 4:30 PM',
+                    location: 'Humanities Building Room 101',
+                    description: 'Examination of ethical issues in professional environments, with emphasis on case studies in technology and engineering fields.',
+                    status: 'In Progress',
+                    grade: '--'
+                }
+            ];
+            
+            // Generate random CAPTCHA
+            function generateCaptcha() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let captcha = '';
+                for (let i = 0; i < 4; i++) {
+                    captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return captcha;
+            }
+            
+            // Set initial CAPTCHA
+            let currentCaptcha = generateCaptcha();
+            captchaText.textContent = currentCaptcha;
+            
+            // Refresh CAPTCHA
+            refreshCaptcha.addEventListener('click', function() {
+                currentCaptcha = generateCaptcha();
+                captchaText.textContent = currentCaptcha;
+            });
+            
+            // User type tabs functionality
+            userTypeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    userTypeTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const userType = this.getAttribute('data-user-type');
+                    if (userType === 'student') {
+                        usernameLabel.textContent = 'Student ID';
+                    } else if (userType === 'teacher') {
+                        usernameLabel.textContent = 'Teacher ID';
+                    } else {
+                        usernameLabel.textContent = 'Admin ID';
+                    }
+                });
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const captcha = document.getElementById('captcha').value;
+                const activeUserType = document.querySelector('.user-type-tab.active').getAttribute('data-user-type');
+                
+                // Simple validation
+                if (username && password && captcha === currentCaptcha) {
+                    // Hide login section and show dashboard
+                    loginSection.style.display = 'none';
+                    dashboard.style.display = 'flex';
+                    
+                    // Update dashboard based on user type
+                    if (activeUserType === 'student') {
+                        userGreeting.textContent = `Welcome, ${username}!`;
+                        userDetails.textContent = `Student ID: ${username} | Computer Science`;
+                        userAvatar.textContent = username.charAt(0).toUpperCase();
+                        dashboardTitle.textContent = 'Student Dashboard';
+                    } else if (activeUserType === 'teacher') {
+                        userGreeting.textContent = `Welcome, Professor ${username}!`;
+                        userDetails.textContent = `Teacher ID: ${username} | Department of Computer Science`;
+                        userAvatar.textContent = 'P';
+                        dashboardTitle.textContent = 'Faculty Dashboard';
+                    } else {
+                        userGreeting.textContent = `Welcome, Administrator ${username}!`;
+                        userDetails.textContent = `Admin ID: ${username} | System Administrator`;
+                        userAvatar.textContent = 'A';
+                        dashboardTitle.textContent = 'Administrator Dashboard';
+                    }
+                    
+                    // Populate courses
+                    populateCourses();
+                } else {
+                    alert('Please fill all fields correctly and enter the correct CAPTCHA.');
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                dashboard.style.display = 'none';
+                loginSection.style.display = 'flex';
+                loginForm.reset();
+                currentCaptcha = generateCaptcha();
+                captchaText.textContent = currentCaptcha;
+                
+                // Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+            });
+            
+            // Option cards functionality
+            optionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const contentId = this.getAttribute('data-content') + '-content';
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected content section
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+            
+            // Close content sections
+            closeContentButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.content-section').classList.remove('active');
+                });
+            });
+            
+            // Sub-option cards functionality
+            subOptionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const subContentId = this.getAttribute('data-sub-content') + '-sub';
+                    
+                    // Remove active class from all sub-option cards
+                    subOptionCards.forEach(c => c.classList.remove('active'));
+                    // Add active class to clicked sub-option card
+                    this.classList.add('active');
+                    
+                    // Hide all sub-content sections
+                    const subContents = document.querySelectorAll('.sub-content');
+                    subContents.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected sub-content section
+                    document.getElementById(subContentId).classList.add('active');
+                });
+            });
+            
+            // Payment options functionality
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Populate courses
+            function populateCourses() {
+                coursesList.innerHTML = '';
+                
+                courses.forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card';
+                    courseCard.innerHTML = `
+                        <div class="course-code">${course.code}</div>
+                        <div class="course-name">${course.name}</div>
+                        <div class="course-info">
+                            <i class="fas fa-user"></i>
+                            <span>${course.instructor}</span>
+                        </div>
+                        <div class="course-info">
+                            <i class="fas fa-clock"></i>
+                            <span>${course.schedule}</span>
+                        </div>
+                        <div class="course-info">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${course.location}</span>
+                        </div>
+                        <div class="course-info">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>${course.credits} Credits</span>
+                        </div>
+                        <div class="course-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Status: ${course.status}</span>
+                        </div>
+                        ${course.grade !== '--' ? `<div class="course-info">
+                            <i class="fas fa-star"></i>
+                            <span>Grade: ${course.grade}</span>
+                        </div>` : ''}
+                    `;
+                    
+                    coursesList.appendChild(courseCard);
+                });
+            }
+            
+            // Initialize courses on page load
+            populateCourses();
+            
+            // Update courses when academic year or semester changes
+            academicYear.addEventListener('change', populateCourses);
+            semester.addEventListener('change', populateCourses);
+        });
+    </script>
+</body>
+</html>
